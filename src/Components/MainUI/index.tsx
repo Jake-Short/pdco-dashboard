@@ -29,7 +29,7 @@ import { formattedTimestamp } from '../../Utils/formattedTime';
 import { fetchAllData } from '../../Utils/fetchAllData';
 import { IFetchedData } from '../../Models/apiData.model';
 import { useInterval } from '../../Hooks/useInterval';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useEventListener } from '../../Hooks/useEventListener';
 import { mobileWidthPxl } from '../../Utils/constants';
 import { MoonPhase } from '../MoonPhase';
@@ -56,6 +56,9 @@ export const MainUI = () => {
   const [isMoonPhaseModalShown, setIsMoonPhaseModalShown] = useState(false);
   const [filterSortDataLast7Days, setFilterSortDataLast7Days] = useState<IFilterSortData>({});
   const [filterSortDataNext10Years, setFilterSortDataNext10Years] = useState<IFilterSortData>({});
+  const [filterSortDataLargeFarNextYear, setFilterSortDataLargeFarNextYear] = useState<
+    IFilterSortData
+  >({});
 
   // Check if mock data is to be used
   const mockQueryParam = new URLSearchParams(useLocation().search);
@@ -128,7 +131,7 @@ export const MainUI = () => {
         </div>
         <div className={classes.neoCount}>
           <TitledCell
-            title="RECENT CLOSE APPROACHES"
+            title="RECENT CLOSE APPROACHES <1LD"
             link="https://cneos.jpl.nasa.gov/ca/"
             tooltip="Close Approach is defined as <1LD at closest approach"
             icon={() => <FontAwesomeIcon icon={faMeteor} />}
@@ -174,7 +177,7 @@ export const MainUI = () => {
         </div>
         <div className={classes.recentTab}>
           <TitledCell
-            title="CLOSE APPROACHES LAST 7 DAYS"
+            title="CLOSE APPROACHES <1LD LAST 7 DAYS"
             link="https://cneos.jpl.nasa.gov/ca/"
             tooltip="Close Approach is defined as <1LD at smallest nominal distance"
             icon={() => <FontAwesomeIcon icon={faTable} />}
@@ -200,7 +203,7 @@ export const MainUI = () => {
         </div>
         <div className={classes.futureTab}>
           <TitledCell
-            title="CLOSE APPROACHES NEXT 10 YEARS"
+            title="CLOSE APPROACHES <1LD NEXT 10 YEARS"
             link="https://cneos.jpl.nasa.gov/ca/"
             tooltip="Close Approach is defined as <1LD at closest approach"
             icon={() => <FontAwesomeIcon icon={faTable} />}
@@ -220,6 +223,32 @@ export const MainUI = () => {
                 dateAtDataFetch={storedData.timestamp}
                 isHeightAuto={isMobile}
                 filterSortData={filterSortDataNext10Years}
+              />
+            )}
+          </TitledCell>
+        </div>
+        <div className={classes.largeDistantTab}>
+          <TitledCell
+            title="LARGE NEOs <19LD NEXT 1 YEAR"
+            link="https://cneos.jpl.nasa.gov/ca/"
+            tooltip="Close Approaches with H <24 in size passing within 19LD"
+            icon={() => <FontAwesomeIcon icon={faTable} />}
+            isDisplayed={isDisplayed}
+            isHeightAuto={isMobile}
+            headerElement={
+              <FilterSortButton
+                filterSortData={filterSortDataLargeFarNextYear}
+                setFilterSortData={setFilterSortDataLargeFarNextYear}
+              />
+            }
+          >
+            {!!storedData && (
+              <TableCAD
+                period="future"
+                cadData={storedData.largeDistantCadData}
+                dateAtDataFetch={storedData.timestamp}
+                isHeightAuto={isMobile}
+                filterSortData={filterSortDataLargeFarNextYear}
               />
             )}
           </TitledCell>

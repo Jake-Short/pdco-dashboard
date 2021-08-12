@@ -40,6 +40,10 @@ const rawRowKeyNames: IRawRowKeyNames = {
   cd_sigma: 'Close Approach Date/Time Uncertainty',
   dist: 'Nominal Distance',
   h: 'H (mag)',
+
+  diameter: 'Diameter',
+  diameter_sigma: 'Diameter Sigma',
+
   nominal_size: 'Nominal Size',
   minimum_size: 'Minimum Size',
   maximum_size: 'Maximum Size',
@@ -89,7 +93,7 @@ export const ObjectModal = ({ isShown, setIsShown, rawRow }: IProps) => {
     const form = doc.getForm();
 
     // Fill in form fields
-    form.getTextField('Name').setText(`Close Approach Fact Sheet - ${rawRow?.fullname}`);
+    form.getTextField('Name').setText(`${rawRow?.fullname}`);
     form.getTextField('Date').setText(`Will pass by Earth on: ${rawRow?.cd.toUTCString()}`);
     rawRow?.min_distance &&
       form
